@@ -1,16 +1,106 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on teh.su</title><link>/posts/</link><description>Recent content in Posts on teh.su</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 26 Jun 2022 18:19:07 -0500</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Replace A Failed Disk In A MD Raid (RAID1)</title><link>/posts/replace-failed-mdraid/</link><pubDate>Sun, 26 Jun 2022 18:19:07 -0500</pubDate><guid>/posts/replace-failed-mdraid/</guid><description>
-This post will cover how to replace a failed disk in a MD RAID1.
-Mark the disk failed # mdadm --manage /dev/md0 --fail /dev/sdb1 Verify that this disk has been marked as failed. # cat /proc/mdstat Personalities : [linear] [multipath] [raid0] [raid1] [raid5] [raid4] [raid6] [raid10] md0 : active raid1 sda1[0] sdb1[2](F) 976773168 blocks [2/1] [U_] Remove the disk from the RAID # mdadm --manage /dev/md0 --remove /dev/sdb1 Copy the partition # sfdisk -d /dev/sda | sfdisk /dev/sdb Add the disk to the RAID # mdadm --manage /dev/md0 --add /dev/sdb1 Verify!</description></item><item><title>mdraid and how to fix the superblock</title><link>/posts/mdraid-fix-superblock/</link><pubDate>Sun, 26 Jun 2022 17:44:14 -0500</pubDate><guid>/posts/mdraid-fix-superblock/</guid><description>
-If you’re using a disk that has been part of a RAID and you can’t find the dev device after a re-format &amp;amp; re-partition then it may need to have it’s superblock erased.
-How To Check The Super Block Using Mdadm # By running the following command, you can see that it is still apart of a raid, even after a format and erasing all the partitions.
-mdadm -Evvv /dev/sda /dev/sda: Magic : xxxx Version : 1.</description></item><item><title>Automate MySQL Backups using Docker</title><link>/posts/docker-mysql-backup/</link><pubDate>Sun, 26 Jun 2022 17:43:37 -0500</pubDate><guid>/posts/docker-mysql-backup/</guid><description>
-We’re able to backup our MySQL or MariaDB databases on a schedule using the following docker image
-https://github.com/tehsu/docker-backup-mysql</description></item><item><title>"INVALID OR CORRUPTED PACKAGE (PGP SIGNATURE)" FIX IN ARCH</title><link>/posts/fix-arch-corrupt/</link><pubDate>Sat, 18 Jun 2022 02:00:20 -0500</pubDate><guid>/posts/fix-arch-corrupt/</guid><description>
-Sometimes I get an error like such, “error: failed to commit transaction (invalid or corrupted package)” in Arch Linux when updating a package, recently it was cdrtools causing my pain.
-To fix this, run the following, sudo pacman -S archlinux-keyring</description></item><item><title>Install Proxmox Without IPMI (OVH)</title><link>/posts/proxmox-without-ipmi/</link><pubDate>Sun, 27 Feb 2022 05:34:09 -0600</pubDate><guid>/posts/proxmox-without-ipmi/</guid><description>
-Usually you have the option to use IPMI and install your own OS on the Dedi that you ordered. With SoYouStart, that option cost money, about 30 dollars a day. So, in this we’ll go over how to install proxmox 6/7 using kvm.
-The first step is to go to the SYS console and reboot the server into rescue mode. Once it is booted, you’ll receive the temp credentials which you can use to get root access to the machine.</description></item><item><title>Automated Postgres Backups using Docker</title><link>/posts/postgres-docker-backups/</link><pubDate>Sun, 27 Feb 2022 04:37:49 -0600</pubDate><guid>/posts/postgres-docker-backups/</guid><description>
-This section we’ll go over running backups for postgres running in docker.
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on teh.su</title><link>/posts/</link><description>Recent content in Posts on teh.su</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 26 Jun 2022 18:19:07 -0500</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Replace A Failed Disk In A MD Raid (RAID1)</title><link>/posts/replace-failed-mdraid/</link><pubDate>Sun, 26 Jun 2022 18:19:07 -0500</pubDate><guid>/posts/replace-failed-mdraid/</guid><description>This post will cover how to replace a failed disk in a MD RAID1.
+Mark the disk failed mdadm --manage /dev/md0 --fail /dev/sdb1 Verify that this disk has been marked as failed. # cat /proc/mdstat Personalities : [linear] [multipath] [raid0] [raid1] [raid5] [raid4] [raid6] [raid10] md0 : active raid1 sda1[0] sdb1[2](F) 976773168 blocks [2/1] [U_] Remove the disk from the RAID mdadm --manage /dev/md0 --remove /dev/sdb1 Copy the partition sfdisk -d /dev/sda | sfdisk /dev/sdb Add the disk to the RAID mdadm --manage /dev/md0 --add /dev/sdb1 Verify!</description><content type="html"><![CDATA[<p>This post will cover how to replace a <em>failed</em> disk in a MD RAID1.</p>
+<h1 id="mark-the-disk-failed">Mark the disk failed</h1>
+<pre><code>mdadm --manage /dev/md0 --fail /dev/sdb1
+Verify that this disk has been marked as failed.
+
+    # cat /proc/mdstat
+    Personalities : [linear] [multipath] [raid0] [raid1] [raid5] [raid4] [raid6] [raid10]
+    md0 : active raid1 sda1[0] sdb1[2](F)
+        976773168 blocks [2/1] [U_]
+</code></pre>
+<h1 id="remove-the-disk-from-the-raid">Remove the disk from the RAID</h1>
+<pre><code>mdadm --manage /dev/md0 --remove /dev/sdb1
+</code></pre>
+<h1 id="copy-the-partition">Copy the partition</h1>
+<pre><code>sfdisk -d /dev/sda | sfdisk /dev/sdb
+</code></pre>
+<h1 id="add-the-disk-to-the-raid">Add the disk to the RAID</h1>
+<pre><code>mdadm --manage /dev/md0 --add /dev/sdb1
+</code></pre>
+<h1 id="verify">Verify!</h1>
+<pre><code>watch cat /proc/mdstat</code></pre>
+]]></content></item><item><title>mdraid and how to fix the superblock</title><link>/posts/mdraid-fix-superblock/</link><pubDate>Sun, 26 Jun 2022 17:44:14 -0500</pubDate><guid>/posts/mdraid-fix-superblock/</guid><description>If you’re using a disk that has been part of a RAID and you can’t find the dev device after a re-format &amp;amp; re-partition then it may need to have it’s superblock erased.
+How To Check The Super Block Using Mdadm By running the following command, you can see that it is still apart of a raid, even after a format and erasing all the partitions.
+mdadm -Evvv /dev/sda /dev/sda: Magic : xxxx Version : 1.</description><content type="html"><![CDATA[<p>If you’re using a disk that has been part of a RAID and you can’t find the dev device after a re-format &amp; re-partition then it may need to have it’s superblock erased.</p>
+<h1 id="how-to-check-the-super-block-using-mdadm">How To Check The Super Block Using Mdadm</h1>
+<p>By running the following command, you can see that it is still apart of a raid, even after a format and erasing all the partitions.</p>
+<pre><code>mdadm -Evvv /dev/sda
+
+/dev/sda:
+        Magic : xxxx
+        Version : 1.2
+    Feature Map : 0x1
+    Array UUID : xxxx
+        Name : node1:0
+Creation Time : Wed Jul 31 22:26:03 2019
+    Raid Level : raid1
+Raid Devices : 2
+
+Avail Dev Size : 488132976 (232.76 GiB 249.92 GB)
+    Array Size : 234297344 (223.44 GiB 239.92 GB)
+Used Dev Size : 468594688 (223.44 GiB 239.92 GB)
+    Data Offset : 264192 sectors
+Super Offset : 8 sectors
+Unused Space : before=264112 sectors, after=19538288 sectors
+        State : clean
+    Device UUID : xxxx
+
+Internal Bitmap : 8 sectors from superblock
+    Update Time : Sun Jun 26 10:49:28 2022
+Bad Block Log : 512 entries available at offset 16 sectors
+    Checksum : e379e3b5 - correct
+        Events : 67497329
+
+
+Device Role : Active device 1
+Array State : AA ('A' == active, '.' == missing, 'R' == replacing)
+</code></pre>
+<h1 id="how-to-fix-it">How To Fix It?</h1>
+<p>You can run the following command against the entire disk and zero out the superblock, above, you can see that there is a raid set against the disk. Once we run the fix you’ll see my output, the raid is gone.</p>
+<pre><code>mdadm --zero-superblock /dev/sda
+/dev/sda:
+MBR Magic : xxxx
+Partition[0] :    468858880 sectors at         2048 (type fd)
+</code></pre>
+<h1 id="while-this-was-a-quick-fix-always-use-a-clean-disk-you-could-easily-mess-up-a-raid-by-importing-the-wrong-disk">While This Was A Quick Fix. Always Use A Clean Disk, You Could Easily Mess Up A Raid By Importing The Wrong Disk.</h1>
+]]></content></item><item><title>Automate MySQL Backups using Docker</title><link>/posts/docker-mysql-backup/</link><pubDate>Sun, 26 Jun 2022 17:43:37 -0500</pubDate><guid>/posts/docker-mysql-backup/</guid><description>We’re able to backup our MySQL or MariaDB databases on a schedule using the following docker image
+https://github.com/tehsu/docker-backup-mysql</description><content type="html"><![CDATA[<p>We’re able to backup our MySQL or MariaDB databases on a schedule using the following docker image</p>
+<pre><code>https://github.com/tehsu/docker-backup-mysql
+</code></pre>
+]]></content></item><item><title>"INVALID OR CORRUPTED PACKAGE (PGP SIGNATURE)" FIX IN ARCH</title><link>/posts/fix-arch-corrupt/</link><pubDate>Sat, 18 Jun 2022 02:00:20 -0500</pubDate><guid>/posts/fix-arch-corrupt/</guid><description>Sometimes I get an error like such, “error: failed to commit transaction (invalid or corrupted package)” in Arch Linux when updating a package, recently it was cdrtools causing my pain.
+To fix this, run the following, sudo pacman -S archlinux-keyring</description><content type="html">&lt;p>Sometimes I get an error like such, “error: failed to commit transaction
+(invalid or corrupted package)” in Arch Linux when updating a package,
+recently it was cdrtools causing my pain.&lt;/p>
+&lt;p>To fix this, run the following,
+sudo pacman -S archlinux-keyring&lt;/p></content></item><item><title>Install Proxmox Without IPMI (OVH)</title><link>/posts/proxmox-without-ipmi/</link><pubDate>Sun, 27 Feb 2022 05:34:09 -0600</pubDate><guid>/posts/proxmox-without-ipmi/</guid><description>Usually you have the option to use IPMI and install your own OS on the Dedi that you ordered. With SoYouStart, that option cost money, about 30 dollars a day. So, in this we’ll go over how to install proxmox 6/7 using kvm.
+The first step is to go to the SYS console and reboot the server into rescue mode. Once it is booted, you’ll receive the temp credentials which you can use to get root access to the machine.</description><content type="html"><![CDATA[<p>Usually you have the option to use IPMI and install your own OS on the Dedi that you ordered. With SoYouStart, that option cost money, about 30 dollars a day. So, in this we’ll go over how to install proxmox 6/7 using kvm.</p>
+<p>The first step is to go to the SYS console and reboot the server into rescue mode. Once it is booted, you’ll receive the temp credentials which you can use to get root access to the machine.</p>
+<p>Once you’re in the box, you can then download the image your planning on using, I’m going to be using Proxmox 6.</p>
+<pre><code>root@rescue:~# wget http://download.proxmox.com/iso/proxmox-ve_6.4-1.iso
+</code></pre>
+<p>Once that is completed, next is to download the kvm files.</p>
+<pre><code>wget -qO- /tmp https://abcvg.ovh/uploads/need/vkvm-latest.tar.gz | tar xvz -C /tmp
+alternative link to download https://drive.google.com/file/d/1nRBcDvP3CWTNByAL9P-qwFGt4totOwPQ/view?usp=sharing
+</code></pre>
+<p>Lastly, we need to start up the qemu so we can began the install. We’ll also need the VNC Viewer to get the install going. In the code below, remember to adjust the disks as needed and change the ISO listed for cdrom.</p>
+<pre><code>/tmp/qemu-system-x86_64 -net nic -net user,hostfwd=tcp::80-:80,hostfwd=tcp::443-:443 -m 1024M -localtime -enable-kvm -hda /dev/sda -hdb /dev/sdb -vnc 127.0.0.1:0 -cdrom /tmp/proxmox-ve_6.4-1.iso -boot d
+</code></pre>
+<p>Once this command is running, you’ll need to create a reverse tunnel to open a connection to port 5900.</p>
+<pre><code>ssh root@teh.su -L 5900:localhost:5900
+</code></pre>
+<p>Once you’ve setup the tunnel, you can open a VNC connection to localhost:5900 and began the installation process.</p>
+<p>Proxmox VE installer GUI over TightVNC via QEMU
+After you complete the installation process, I had to boot the installation up and swap out the network interface to eno1, I booted the system up by running the following command,</p>
+<pre><code>/tmp/qemu-system-x86_64 -net nic -net user,hostfwd=tcp::80-:80,hostfwd=tcp::443-:443 -m 1024M -localtime -enable-kvm -hda /dev/sda -hdb /dev/sdb -vnc 127.0.0.1:0
+</code></pre>
+<p>Then you can edit the file /etc/network/interfaces</p>
+<p>If you have any questions or need further help, you can join my discord, it’s available under the about tab.</p>
+]]></content></item><item><title>Automated Postgres Backups using Docker</title><link>/posts/postgres-docker-backups/</link><pubDate>Sun, 27 Feb 2022 04:37:49 -0600</pubDate><guid>/posts/postgres-docker-backups/</guid><description>This section we’ll go over running backups for postgres running in docker.
 A few things, since I am running rclone as the backend for the filesystem here, we can’t do hardlinks.
 My docker image here, https://hub.docker.com/r/tehsu/docker-postgres-backup-local is built with a cp rather than a symlink.
-I plan to add checks to see if hardlinks are available, if they are then we’d continue to use symlinks otherwise we’d need to copy the file.</description></item></channel></rss>
+I plan to add checks to see if hardlinks are available, if they are then we’d continue to use symlinks otherwise we’d need to copy the file.</description><content type="html"><![CDATA[<p>This section we’ll go over running backups for postgres running in docker.</p>
+<p>A few things, since I am running rclone as the backend for the filesystem here, we can’t do hardlinks.</p>
+<p>My docker image here, <a href="https://hub.docker.com/r/tehsu/docker-postgres-backup-local">https://hub.docker.com/r/tehsu/docker-postgres-backup-local</a> is built with a cp rather than a symlink.</p>
+<p>I plan to add checks to see if hardlinks are available, if they are then we’d continue to use symlinks otherwise we’d need to copy the file.</p>
+]]></content></item></channel></rss>
