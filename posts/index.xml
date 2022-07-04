@@ -73,8 +73,10 @@ To fix this, run the following, sudo pacman -S archlinux-keyring</description><c
 (invalid or corrupted package)” in Arch Linux when updating a package,
 recently it was cdrtools causing my pain.&lt;/p>
 &lt;p>To fix this, run the following,
-sudo pacman -S archlinux-keyring&lt;/p></content></item><item><title>Install Proxmox Without IPMI (OVH)</title><link>/posts/proxmox-without-ipmi/</link><pubDate>Sun, 27 Feb 2022 05:34:09 -0600</pubDate><guid>/posts/proxmox-without-ipmi/</guid><description>Usually you have the option to use IPMI and install your own OS on the Dedi that you ordered. With SoYouStart, that option cost money, about 30 dollars a day. So, in this we’ll go over how to install proxmox 6/7 using kvm.
-The first step is to go to the SYS console and reboot the server into rescue mode. Once it is booted, you’ll receive the temp credentials which you can use to get root access to the machine.</description><content type="html"><![CDATA[<p>Usually you have the option to use IPMI and install your own OS on the Dedi that you ordered. With SoYouStart, that option cost money, about 30 dollars a day. So, in this we’ll go over how to install proxmox 6/7 using kvm.</p>
+sudo pacman -S archlinux-keyring&lt;/p></content></item><item><title>Install Proxmox Without IPMI (OVH)</title><link>/posts/proxmox-without-ipmi/</link><pubDate>Sun, 27 Feb 2022 05:34:09 -0600</pubDate><guid>/posts/proxmox-without-ipmi/</guid><description>** This still works but OVH now supports free IPMI on their SyS line.
+Usually you have the option to use IPMI and install your own OS on the Dedi that you ordered. With SoYouStart, that option cost money, about 30 dollars a day. So, in this we’ll go over how to install proxmox 6/7 using kvm.
+The first step is to go to the SYS console and reboot the server into rescue mode.</description><content type="html"><![CDATA[<p>** This still works but OVH now supports free IPMI on their SyS line.</p>
+<p>Usually you have the option to use IPMI and install your own OS on the Dedi that you ordered. With SoYouStart, that option cost money, about 30 dollars a day. So, in this we’ll go over how to install proxmox 6/7 using kvm.</p>
 <p>The first step is to go to the SYS console and reboot the server into rescue mode. Once it is booted, you’ll receive the temp credentials which you can use to get root access to the machine.</p>
 <p>Once you’re in the box, you can then download the image your planning on using, I’m going to be using Proxmox 6.</p>
 <pre><code>root@rescue:~# wget http://download.proxmox.com/iso/proxmox-ve_6.4-1.iso
